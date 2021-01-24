@@ -1,0 +1,670 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>git 再次学习笔记</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li>
+<ul>
+<li></li>
+</ul>
+</li>
+<li>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+</li>
+<li>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <p></p><div class="toc"><h3>git </h3><ul><li><a href="#git__2">git 再次学习</a></li><ul><li><a href="#_6">引言</a></li><li><a href="#git__16">目前使用的git 版本</a></li><li><a href="#git__20">git 目录组成</a></li><li><a href="#git_24">git的内部数据管理</a></li><li><a href="#_32">底层命令</a></li><ul><li><a href="#_36">工作区到版本库</a></li><ul><li><a href="#git_hashobject__38">git hash-object 文件名</a></li></ul><li><a href="#_77">暂存区</a></li><ul><li><a href="#git_updateindex_add_cacheinfo_100644__testtxtgit_writetree_78">git update-index --add --cacheinfo 100644 哈希值 test.txt与git write-tree</a></li><li><a href="#_150">注意点</a></li></ul><li><a href="#_163">提交对象</a></li></ul><li><a href="#_203">高层命令</a></li><ul><li><a href="#git_add__205">git add +文件名或路径</a></li><li><a href="#git_commit_m__213">git commit -m ""</a></li><li><a href="#git_status_221">git status</a></li><li><a href="#_224">工作区的状态</a></li><li><a href="#git_diff__git_diff_cached_238">git diff 和 git diff --cached</a></li><li><a href="#_303">跳过使用暂存区</a></li><li><a href="#git_rm_318">git rm</a></li><ul><li><a href="#_322">注意理解</a></li></ul><li><a href="#_340">修改文件名</a></li><li><a href="#_362">查看一个项目日志</a></li><li><a href="#git_reflog_373">git reflog</a></li></ul><li><a href="#branch_381">分支（branch）</a></li><ul><li><a href="#_391">形象理解</a></li><li><a href="#_395">代码理解</a></li><li><a href="#_415">显示分支列表</a></li><li><a href="#_421">删除分支</a></li><li><a href="#_435">查看项目分叉历史</a></li><ul><li><a href="#_445">别名</a></li></ul><li><a href="#_457">查看每一个分支最新一次的提交</a></li><li><a href="#_465">版本回溯</a></li><li><a href="#_480">合并</a></li><ul><li><a href="#_488">查看合并到当前分支的分支列表</a></li><li><a href="#_494">查看没有合并到当前分支的分支列表</a></li></ul></ul><li><a href="#_500">目前为止的实际案例</a></li><ul><li><a href="#_503">实现</a></li><ul><li><a href="#_536">注意</a></li></ul><li><a href="#git__555">git 的临时存储栈</a></li></ul><li><a href="#_580">后悔药</a></li><ul><li><a href="#_586">工作区</a></li><li><a href="#_599">已经提交到暂存区</a></li><li><a href="#_609">已经提交到版本库</a></li></ul><li><a href="#reset_617">reset</a></li><ul><li><a href="#git_reset_soft_head_630">git reset --soft head~</a></li><li><a href="#git_reset_mixed_head_649">git reset [--mixed] head~</a></li><li><a href="#git_reset_hard_head_663">git reset --hard head~</a></li></ul><li><a href="#git_reset_hard_hash_672">git reset --hard hash值</a></li><li><a href="#_685">数据恢复</a></li><li><a href="#tag_694">打tag</a></li></ul><li><a href="#_714">远程仓库</a></li><ul><li><a href="#_718">远程仓库别名</a></li><li><a href="#git_push____726">git push [仓库别名]  \[分支]</a></li><li><a href="#git_clone__730">git clone 地址</a></li><li><a href="#git_fetch___752">git fetch + 库别名</a></li><li><a href="#git_pull_783">git pull</a></li><ul><li><a href="#git_branch_u__795">git branch -u 远程跟踪分支</a></li></ul><li><a href="#git_checkout_track__817">git checkout --track 远程跟踪分支</a></li><li><a href="#_830">冲突问题</a></li><li><a href="#_841">删除远程分支</a></li><li><a href="#github__851">github 远程仓库的一些问题</a></li><li><a href="#_859">忽略文件</a></li><li><a href="#SSH_876">SSH</a></li></ul></ul></div><p></p>
+<h1><a id="git__2"></a>git 再次学习</h1>
+<blockquote>
+<p>之前几个月学习过git当时事情比较多，未重视，想着先用起来，现在好久没有使用，之后要进行一些自己的项目开发迭代，又想重新学习，现在感觉但是git工具用的并不很懂，现重新学习</p>
+</blockquote>
+<h2><a id="_6"></a>引言</h2>
+<p>git是一个不同于其他集中式的版本管理工具，git采用的是一种分布式的版本管理工具</p>
+<p>每个客户端同时又是一台服务器保证项目安全，内置的压缩算法解决了不想只保存快照，还保存大量数据镜像的空间问题</p>
+<p>总之：<br>
+git每次commit都是整个项目的快照，可在本地，数据安全</p>
+<p>集中式，只保存修改的快照，在一个总服务器，服务器宕机，玩完</p>
+<h2><a id="git__16"></a>目前使用的git 版本</h2>
+<p><img src="https://img-blog.csdnimg.cn/20210117105726143.png" alt="在这里插入图片描述"></p>
+<h2><a id="git__20"></a>git 目录组成</h2>
+<p><img src="https://img-blog.csdnimg.cn/2021011816103058.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2><a id="git_24"></a>git的内部数据管理</h2>
+<p>传统理解：<s><strong>工作区 --&gt; 暂存区 --&gt; 版本库</strong></s></p>
+<p>实际上在工作区到版本库这个地方，是工作区先到了版本库然后被拉到了暂存区</p>
+<p>实际：<strong>工作区 --&gt; 版本库 --&gt; 暂存区–&gt;版本库</strong></p>
+<h2><a id="_32"></a>底层命令</h2>
+<p>有三个对象需要注意：git对象、树对象、提交对象</p>
+<h3><a id="_36"></a>工作区到版本库</h3>
+<h4><a id="git_hashobject__38"></a>git hash-object 文件名</h4>
+<p>git init命令将文件夹变为了一个<strong>工作区</strong></p>
+<p>生成了一个.git 的隐藏文件夹</p>
+<p>里面的object放着的就是<strong>版本库</strong></p>
+<p>git用的对象（<strong>git对象</strong>（blob））来存文件，是一个blob的键值对<br>
+键是一个生成的hash值<br>
+值则为文件内容</p>
+<p>那如何验证上述内容</p>
+<ol>
+<li>
+<p>首先创建一个文件写入“jiao”</p>
+</li>
+<li>
+<p>将这个文件用hash编码 其中-w是保存的意思</p>
+</li>
+<li>
+<p>查看是否保存成功了</p>
+<p>会用hash的前两个字符作为一个文件夹其他字符作为其中的文件名，这一整个hash值就是一个键</p>
+</li>
+<li>
+<p>看值<br>
+cat被形象的理解为猫一眼<br>
+-p 是根据编码 给出一个理想的形式，方便用户看</p>
+</li>
+</ol>
+<pre><code class="prism language-shell"><span class="token keyword">echo</span> “jiao” <span class="token operator">&gt;</span> test.txt
+<span class="token function">git</span> hash-objext -w test.txt
+<span class="token function">find</span> ./.git/oject -type f
+<span class="token function">git</span> cat-file -p 哈希值
+</code></pre>
+<p>当然修改test.txt这个文件，并用hash保存后（不保存object是不会有这个文件的，方便理解工作区与暂存区的概念），并不会修改原本的那个hash文件，而是又新建了一个hash文件出来，这样可以版本控制回滚</p>
+<p>这里的键值对，没有真正的文件名<br>
+在Git中，文件名并没有被保存——我们仅保存了文件的内容</p>
+<p>解决方案：树对象<br>
+<strong>一个git对象代表一个文件 不能代表一个版本</strong></p>
+<h3><a id="_77"></a>暂存区</h3>
+<h4><a id="git_updateindex_add_cacheinfo_100644__testtxtgit_writetree_78"></a>git update-index --add --cacheinfo 100644 哈希值 test.txt与git write-tree</h4>
+<p><strong>树对象</strong></p>
+<p>树对象中的每一个对象对应一次版本的快照</p>
+<p>树对象是对整个项目的管理，如<strong>管理项目名</strong></p>
+<p>操作：<br>
+利用update index 命令 为 test.txt 文件的首个版本——创建一个暂存区。<br>
+并通过write tree 命令 生成树对像。<br>
+查看生成对象类型</p>
+<p>命令：</p>
+<pre><code class="prism language-shell"><span class="token function">git</span> update-index --add --cacheinfo 100644 哈希值 test.txt
+<span class="token function">git</span> write-tree
+</code></pre>
+<blockquote>
+<p>文件模式<br>
+100644 ，表明这是一个普通文件<br>
+100755，表示一个可执行文件<br>
+120000 ，表示一个符号链接 。<br>
+–add 选项<br>
+因为此前该文件并不在暂存区中<br>
+<em><strong>首次需要 add</strong></em><br>
+–cacheinfo 选项<br>
+因为将要添加的文件位于<br>
+Git 数据库中，而不是位于当前<br>
+目录下 所有需要 cacheinfo</p>
+</blockquote>
+<p>这时.git目录下会增加一个<strong>index暂存区文件</strong></p>
+<p>1.将文件直接放到版本库<br>
+<img src="https://img-blog.csdnimg.cn/20210116174505381.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>2.从版本库拉取到暂存区，并写入树对象中</p>
+<p><img src="https://img-blog.csdnimg.cn/20210116174601341.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>这时，这个项目已经有了第一个版本</p>
+<p>3.看新加的树对象的类型  （-t用来查看类型）</p>
+<p><img src="https://img-blog.csdnimg.cn/20210116174708521.png" alt="在这里插入图片描述"></p>
+<p>4.查看暂存区</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011617474570.png" alt="在这里插入图片描述"></p>
+<p>5.修改test.txt 直接放到版本库并拉到暂存区</p>
+<p>查看暂存区，可以发现test的hash已经被替换</p>
+<p><img src="https://img-blog.csdnimg.cn/20210116175210718.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>修改文件重新拉到暂存区可以不加–add， 这里是之前复制上面的所以加了</p>
+<p>6.添加一个new.txt文件, 直接放到版本库并拉到暂存区</p>
+<p><img src="https://img-blog.csdnimg.cn/20210116175343412.png" alt="在这里插入图片描述"><br>
+<img src="https://img-blog.csdnimg.cn/20210116175415752.png" alt="在这里插入图片描述"></p>
+<p>发现这两步比较繁琐可以合为一步</p>
+<pre><code class="prism language-shell"><span class="token keyword">echo</span> <span class="token string">'jiao'</span> <span class="token operator">&gt;</span> new.txt
+<span class="token function">git</span> udpate-index --add new.txt
+</code></pre>
+<h4><a id="_150"></a>注意点</h4>
+<hr>
+<p>这一步就是之后高级命令里面的<strong>git add</strong><br>
+以上的内容也说明了实际是先<strong>从工作区到版本库再到暂存区的</strong><br>
+也就是说即使只通过git add命令在暂存区记录其实也可以进行版本控制（回滚）</p>
+<hr>
+<p>7.更新树对象</p>
+<p><img src="https://img-blog.csdnimg.cn/20210116175526760.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3><a id="_163"></a>提交对象</h3>
+<p>一个树对象也可以加入之前的树对象，作为一个git对象其中</p>
+<p>新树的hash：c3350ef71d839d3f63d44b8278a31b1746106237</p>
+<p>老树的hash：8c6cd6603120e3d10ff18e352b0f0a024eaa9f44</p>
+<p><strong>将第一个树对象加入第二个树对象，使其成为新的树对象</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20210116182405239.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>目前形成这样的结构</p>
+<p><img src="https://img-blog.csdnimg.cn/20210116183328661.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>现在有三个树对象 （执行了三次 write tree ）），分别代表了我们想要跟踪的不同项目快照。然而问题依旧：若想重用这些快照，你 必须记住所有三个哈希值。 并且，你也完全不知道是谁保存了这些快照，在什么时刻保存的，以及为什么保存这些快照。 而以上这些，正是提交对象（ commit object）能为你保存的基本信息</p>
+<p>所以总之，提交对象就是一个树对象+描述信息</p>
+<p>提交对象的使用</p>
+<p><img src="https://img-blog.csdnimg.cn/20210116214214805.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>由图可以看出这个提交对象是有一个tree对象和一个作者，提交者以及描述信息组成</p>
+</blockquote>
+<p>这里使用的是第一个树对象，所以不需要指定父对象</p>
+<p>第二树的hash：<strong>c3350ef71d839d3f63d44b8278a31b1746106237</strong></p>
+<p>第一树的hash：<strong>8c6cd6603120e3d10ff18e352b0f0a024eaa9f44</strong></p>
+<p>但是之后的树对象是要指定父对象的</p>
+<p>注意这里指的父对象是一个提交对象<br>
+<img src="https://img-blog.csdnimg.cn/2021011621540758.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2><a id="_203"></a>高层命令</h2>
+<h3><a id="git_add__205"></a>git add +文件名或路径</h3>
+<p>是底层命令<br>
+git hash-object -w 文件名<br>
+git update-index --add --cacheinfo hash值 文件名<br>
+的组合<br>
+实现了文件先到版本库又被拉回暂存区（原本意义上的 工作区到暂存区）</p>
+<h3><a id="git_commit_m__213"></a>git commit -m “”</h3>
+<p>是底层命令<br>
+git write-tree<br>
+git commit-tree<br>
+的结合</p>
+<p>暂存区到版本库，代表了一次版本的正式提交上线</p>
+<h3><a id="git_status_221"></a>git status</h3>
+<p>查看文件的状态</p>
+<h3><a id="_224"></a>工作区的状态</h3>
+<p>分为已跟踪和未跟踪，已经add的文件就是以跟踪状态，反之…</p>
+<ol>
+<li>新建一个test.txt文件，放到暂存区<img src="https://img-blog.csdnimg.cn/20210117100920555.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ol>
+<blockquote>
+<p>有untracked files ，有未跟踪的文件，然后add 到暂存区</p>
+</blockquote>
+<ol start="3">
+<li>修改一下test文件，查看状态<img src="https://img-blog.csdnimg.cn/20210117101006212.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ol>
+<blockquote>
+<p>发现修改后的文件 not staged ,没有放到暂存区</p>
+</blockquote>
+<ol start="5">
+<li>将文件add到暂存区<img src="https://img-blog.csdnimg.cn/2021011710120316.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ol>
+<h3><a id="git_diff__git_diff_cached_238"></a>git diff 和 git diff --cached</h3>
+<p><strong>已跟踪未暂存的更新和查看已暂存</strong></p>
+<blockquote>
+<p>实际上 git status 的显示比较简单，仅仅是列出了修改过的文件，如果要<br>
+查看具体修改了什么地方，可以用 git diff 命令 这个命令 它已经能 解决 我们<br>
+两个问题了： <strong>当前做的哪些更新还没有暂存？有哪些更新已经暂存起来准备好了下次提交？</strong></p>
+</blockquote>
+<ol>
+<li>当前做的哪些更新还没有暂存？，<br>
+命令： git diff 不加参数直接输入 git diff</li>
+<li>有哪些更新已经暂存起来准备好了下次提交？<br>
+命令： git diff cached 或者 git diff staged(1.6.1 以上</li>
+</ol>
+<p>紧跟上文截图</p>
+<p><img src="https://img-blog.csdnimg.cn/20210117104652378.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>目前所有的文件都处于跟踪，所以并未有未暂存的文件</p>
+</blockquote>
+<p><strong>注意：</strong> <strong>没有跟踪的文件，使用git diff 也是不到的，只能看到一些跟踪过又修改的还为暂存的文件</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20210117104753474.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>由于目前还都没有提交过，所以git diff --cached 的test.txt文件都是新+的</p>
+</blockquote>
+<p>接下来提交项目</p>
+<p><img src="https://img-blog.csdnimg.cn/20210117105042832.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>可以看到提交项目后，暂存区和未暂存区修改的内容清空</p>
+<p>修改test.txt文件，用git diff 看为暂存修改的内容</p>
+<p><img src="https://img-blog.csdnimg.cn/20210117105448708.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>此时，暂存区修改无修改的内容</p>
+<p><img src="https://img-blog.csdnimg.cn/20210117105828522.png" alt="在这里插入图片描述"></p>
+<p>可以看到提交项目后，暂存区和未暂存区修改的内容清空，但是暂存区其实没有清空是有一个git对象类型的文件</p>
+<p><img src="https://img-blog.csdnimg.cn/20210117111701937.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>因为此时还没add新修改的文件，所以暂存区存放的还是之前提交的文件</p>
+</blockquote>
+<p>add后</p>
+<p><img src="https://img-blog.csdnimg.cn/20210117112011168.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>可以看到hash值改变</p>
+</blockquote>
+<p>查看暂存区是否有修改</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011711210591.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<hr>
+<p>还没有提交会显示，changes to be commited ,准备去提交的文件<br>
+提交过后，noting to commit</p>
+<p><img src="https://img-blog.csdnimg.cn/20210117112329136.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>提交时也可直接 git commit 不加 -m 会进入到vim编辑器，编辑描述信息</strong></p>
+<h3><a id="_303"></a>跳过使用暂存区</h3>
+<p>也可以直接从工作区直接建立一个新的版本出来一步到位</p>
+<p>直接<code>git commit -a -m</code></p>
+<p><strong>注意</strong>：这个命令只能提交哪些，跟踪过的文件，如修改后的文件，未跟踪的文件，不能用</p>
+<blockquote>
+<p>文件修改后的状态依然是跟踪的，不过是未暂存（这也许就是跟踪和暂存的区别吧）</p>
+</blockquote>
+<p><strong>代码证明：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20210118163302870.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3><a id="git_rm_318"></a>git rm</h3>
+<p>git 给的删除操作</p>
+<h4><a id="_322"></a>注意理解</h4>
+<p>git rm 是删除在工作区的文件，提交后，但是在版本库objects中相当于是做了一个新增操作，新增了一个提交后的删除文件后的一个快照，如果版本库真啥都没了，你还版本控制个屁</p>
+<p>写入一个新文件new.txt，并提交<br>
+删除一个test文件，加入一个demo文件不add<br>
+删除demo</p>
+<p>demo就像是人间白来了一场，任何痕迹没留下</p>
+<hr>
+<blockquote>
+<p>注意:在删除文件时，因为在文件git add被跟踪过其实是从版本库拉到暂存区的，这时版本库是有备份的，但是你在修改过一个文件时，因为没有提交，所以版本库是没有备份的，这时，如果修改后执行删除命令，会报错。可以采用 <code>git rm --cached 文件名</code>，这可以将文件的原有暂存区给删了，但是工作区不删，<code>git rm -f 文件名</code>，暂存区，工作区都会删除</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20210117120325618.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="9"></p>
+<blockquote>
+<p>注意删除test.txt 文件实际执行了两个步骤，先rm 文件，有add 了一下目录</p>
+</blockquote>
+<h3><a id="_340"></a>修改文件名</h3>
+<p>git mv 源文件名 新文件名</p>
+<p>git mv 实际上执行了三个命令:</p>
+<blockquote>
+<p>mv 源文件名 新文件名<br>
+git rm  源文件名<br>
+git add 新文件名</p>
+</blockquote>
+<p>验证如下</p>
+<p><img src="https://img-blog.csdnimg.cn/20210118154311889.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>先用基础命令，mv一个文件，git status一下状态，可以发现mv指令删除了文件，创建了一个新文件，且新文件未被跟踪</p>
+</blockquote>
+<p>接着尝试git mv</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011815434938.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>一步到位</p>
+</blockquote>
+<h3><a id="_362"></a>查看一个项目日志</h3>
+<p>三个命令</p>
+<blockquote>
+<p>git log<br>
+git log --pretty=oneline<br>
+git log --oneline<br>
+常用第三个显示简洁信息</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20210118155014345.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3><a id="git_reflog_373"></a>git reflog</h3>
+<p>这个命令，<strong>记录着head的移动</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20210121155027606.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>按 q 退出</strong></p>
+<h2><a id="branch_381"></a>分支（branch）</h2>
+<p>分支相当于一个指针</p>
+<p>一直指向最新的提交对象</p>
+<p>之前所有的分支都是master</p>
+<p>实际上通过上图可以看出，head-&gt;master</p>
+<h3><a id="_391"></a>形象理解</h3>
+<blockquote>
+<p>head 是一个控制的指针，master相当于一个用户，这个用户是默认创建的，可以当做一个树的主干，其他分支就是可以由它向外开发，当其他分支安全稳定了，就可以向这个主干，输送养分了，甚至还可以它这个分支变成主干</p>
+</blockquote>
+<h3><a id="_395"></a>代码理解</h3>
+<p>1.新建分支，并切换到这个分支</p>
+<p><img src="https://img-blog.csdnimg.cn/20210118162548352.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>新建分支，再切换到那个分支，这两步可以合为一步<br>
+<code>git checkout -b 新分支名</code></p>
+</blockquote>
+<p>2.在该分支上新建一个文件</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011816262715.png" alt="在这里插入图片描述"></p>
+<p>3.提交</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011816264593.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>可以看到jiao指针（分支）前进了。而master指针（主干）并没有前进</p>
+</blockquote>
+<h3><a id="_415"></a>显示分支列表</h3>
+<p>git branch</p>
+<p><img src="https://img-blog.csdnimg.cn/20210118163635363.png" alt="在这里插入图片描述"></p>
+<h3><a id="_421"></a>删除分支</h3>
+<p><strong>注意：</strong> 不能自己删自己</p>
+<p>所以要删除分支，需要先前切换到其他分支</p>
+<p>git branch -d 分支名</p>
+<p>注意：会有提示，没有与主干合并is not fully merged</p>
+<p>需要 git branch -D 分支名 // 强制删除</p>
+<p><img src="https://img-blog.csdnimg.cn/20210118231735680.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3><a id="_435"></a>查看项目分叉历史</h3>
+<pre><code>git log --oneline --decorate --graph --all
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210118231809892.png" alt="在这里插入图片描述"></p>
+<p>这个太长了</p>
+<h4><a id="_445"></a>别名</h4>
+<p>可以起<strong>别名</strong></p>
+<p>$ <code>git config --global alias.co checkout</code></p>
+<p><img src="https://img-blog.csdnimg.cn/20210118232055573.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>可以看到起到了同样的效果</p>
+<p><img src="https://img-blog.csdnimg.cn/20210118232411296.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3><a id="_457"></a>查看每一个分支最新一次的提交</h3>
+<p>git branch -v</p>
+<p><img src="https://img-blog.csdnimg.cn/20210118232533357.png" alt="在这里插入图片描述"></p>
+<p><span id="版本回溯"></span></p>
+<h3><a id="_465"></a>版本回溯</h3>
+<p>为不影响主干，新建分支回溯</p>
+<p>加入需要回溯的hash值，通过提交的版本左侧可得</p>
+<p><img src="https://img-blog.csdnimg.cn/20210118233812395.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>这里我新建分支yue，回溯到test.txt删除之前，可见回溯成功<br>
+<strong>有个注意的地方：记得切换到新建的分支上去</strong><br>
+还有一个大地方，会发现，在<strong>切换分支时，工作区的目录变了</strong><br>
+所以在<strong>每次需要切换分支时，最好先提交一下！！</strong></p>
+</blockquote>
+<p>有一个场景，在一个分支中，存在一个未跟踪的文件，没有add，这时切换到主分支，为了安全，这个文件不会随分支切换工作区的更改而更改，也就是文件会出现在主干中，这个是合理的，但是是不愿看到的，所以先提交没毛病</p>
+<h3><a id="_480"></a>合并</h3>
+<p>合并是应该从主干来吸纳分支</p>
+<pre><code>git merge 分支名
+</code></pre>
+<h4><a id="_488"></a>查看合并到当前分支的分支列表</h4>
+<pre><code>git branch --merged
+</code></pre>
+<h4><a id="_494"></a>查看没有合并到当前分支的分支列表</h4>
+<pre><code>git branch --no-merged
+</code></pre>
+<h2><a id="_500"></a>目前为止的实际案例</h2>
+<p><img src="https://img-blog.csdnimg.cn/20210119005903165.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3><a id="_503"></a>实现</h3>
+<p>1、在yun分支的基础上进行，新建了一个day.txt 完成50% 提交</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119014250629.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><span id="没有必要的提交">没有必要的提交</span></p>
+<blockquote>
+<p>这里的提交其实是没有必要的，但是为了安全性，不得不提交所以在一下小结介绍一种存储方式，解决这个问题<br>
+<a href="#git%E7%9A%84%E4%B8%B4%E6%97%B6%E5%AD%98%E5%82%A8%E6%A0%88">git的临时存储栈</a></p>
+</blockquote>
+<p>2、在master新键一个分支hotbug，更改aa.txt 中的bug ,并提交合并</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119014529258.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>发现此时主干走在了分支前面，且出现了分叉，（注意是从下往上看）</p>
+</blockquote>
+<p>3、接着继续自己的工作，提交</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119015018284.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>4、之前的hotbug由于修改完bug 已经没有了，就可以删除了</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119015148111.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>5、提交合并今天的工作</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119015359170.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><span id="分支合并冲突"></span></p>
+<h4><a id="_536"></a>注意</h4>
+<blockquote>
+<p><strong><em>可以发现，合并并不是很成功，是因为，之前主干走在了分支前面，且分支之后又修改了aa.txt</em>(主干也有)，这时，不知道你是否愿意接受aa.txt的更改，也许那些更改会影响你的功能实现，这时系统告诉你产生了冲突,让你自己抉择</strong>*<br>
+同样可以注意：发生冲突后，分支的括号多了个 |merging(合并中…)</p>
+</blockquote>
+<p>自己可以去修改一个冲突的那个文件</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119015808112.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>这时vim编辑器中的内容，可以看到，git 给每个分支做的不同的修改，给分开显示用=====隔开了</p>
+<p>自己编辑好之后，add 然后commit</p>
+<p>这时主干的所有文件就正式上线了</p>
+<p>查看一下</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119020228618.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3><a id="git__555"></a>git 的临时存储栈</h3>
+<p><span id="git的临时存储栈">git的临时存储栈</span></p>
+<p>问题：<br>
+<a href="#%E6%B2%A1%E6%9C%89%E5%BF%85%E8%A6%81%E7%9A%84%E6%8F%90%E4%BA%A4">工作进行到一半问题，需要进行其他分支的现分支保存问题</a></p>
+<p>为了解决这个问题有一个git存储功能</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119112711508.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="git stash"></p>
+<p>一般建议一次只存放一个东西到栈内，不然要涉及到，栈的后进先出，先进后出问题</p>
+<p>使用时使用 <code>git stash pop</code> 一步到位，<strong>直接应用加删除</strong></p>
+<p><strong>！！注意</strong> ： 使用时，一定要<strong>干完其他事情回到自己的分支去，在用这个命令</strong>。不然会弄到主干，而且主干还不认这个文件，需要强制移出，而且用了这个命令，栈内该文件也没有了 ，就很麻烦</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119141845743.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>可以看到，并不会产生提交记录</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119142250348.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>可以看到实际是提交了的，但是还原之后，不会有日志</p>
+</blockquote>
+<h2><a id="_580"></a>后悔药</h2>
+<p>分为三块</p>
+<blockquote>
+<p>如果是在工作区跟踪都没跟踪过，直接要么直接rm 删了，要么在编辑器中撤销</p>
+</blockquote>
+<h3><a id="_586"></a>工作区</h3>
+<p>也可以说是 <strong>在暂存区已修改未暂存</strong><br>
+查看<code>git status</code>自有解法</p>
+<p>这步适用于，之前暂存过，现在修改了，在工作区也有了，但是不想再次提交到暂存区</p>
+<p><code>git restore 文件名</code> 这个命令之前不是这样的原命令为 <code>git checkout -- 文件名 （--后面有空格）</code>,不同版本不一致</p>
+<p>所以就看着<code>git status</code>来就行</p>
+<p><img src="https://img-blog.csdnimg.cn/20210121145925400.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3><a id="_599"></a>已经提交到暂存区</h3>
+<p>查看<code>git status</code>自有解法</p>
+<p>这个适用于已经在暂存区，又不想让它在暂存区的了</p>
+<blockquote>
+<p>其实这个与 git rm --cached 文件名 有异曲同工之妙</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20210121150247239.png" alt="在这里插入图片描述"></p>
+<h3><a id="_609"></a>已经提交到版本库</h3>
+<p>这步适用于那些提交时看错了，如有的修改，没有 git add 就提交了，导致新修改没有提交上，或者提交的时候，描述信息写错了</p>
+<p>如果有新的修改没有add， 那就直接 <code>git add</code></p>
+<p>然后 <code>git commit --amend</code>，这时会跳到vim编辑器，让你修改描述信息， 这时就会覆盖上次，提交可以通过看日志，<code>git sab</code> (这个是别名)看到</p>
+<h2><a id="reset_617"></a>reset</h2>
+<p>我是这样理解的：<strong>后悔药是有一些待解决的问题要回头，而reset是写错了要回头</strong></p>
+<p>这两个的命令，有些还是异曲同工</p>
+<p>如果我之前提交了，现在我不想要这个提交</p>
+<p>我们可以这样做，因为head指向最新的提交对象，现在让head指向前一个提交对象</p>
+<blockquote>
+<p>注意这里的head移动时，是带着指针（分支），在同一个分支的不同版本一起移动，之前的checkout是head在不同的分支下切换，所以前者是<strong>版本穿梭</strong>，而后者是<strong>分支穿梭</strong></p>
+</blockquote>
+<h3><a id="git_reset_soft_head_630"></a>git reset --soft head~</h3>
+<p>1、修改yue.txt<br>
+2、提交到版本库<br>
+3、执行命令<code>git reset --soft head~</code><br>
+4、查看头指针位置<br>
+5、查看版本日志<br>
+<img src="https://img-blog.csdnimg.cn/2021012218021321.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>可以看到相当于版本撤销了，撤销了提交</p>
+</blockquote>
+<p>6、查看暂存区，没变<br>
+7、查看工作区，没变</p>
+<p><img src="https://img-blog.csdnimg.cn/20210122180716480.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>总结：<code>git reset --soft head~</code> ,只是撤销了当前提交的版本，暂存区和工作区内容都不改变</p>
+</blockquote>
+<h3><a id="git_reset_mixed_head_649"></a>git reset [–mixed] head~</h3>
+<p><img src="https://img-blog.csdnimg.cn/20210122184815754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>总结：<code>git reset head~</code> 撤销了版本提交，同时把暂存区的本次的内容给清， 这个命令也是最常用得到了所以可以省略 --mixed</p>
+</blockquote>
+<p>当然可以单独回退一个文件，毕竟一次加入了好多，一个都从暂存区删除了不至于</p>
+<pre><code>git reset 文件名
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210122225659349.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3><a id="git_reset_hard_head_663"></a>git reset --hard head~</h3>
+<p><img src="https://img-blog.csdnimg.cn/20210122223110736.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>总结：这个命令会使整个上一次提交到上上次提交之间的所有工作全部撤销，这个命令是git 会真正的销毁数据的仅有的几个操作之一，不能撤销</p>
+</blockquote>
+<p><span id="版本回退"></span></p>
+<h2><a id="git_reset_hard_hash_672"></a>git reset --hard hash值</h2>
+<p><img src="https://img-blog.csdnimg.cn/20210122231455749.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>这个几乎实现了<strong>版本穿梭</strong><br>
+当然需要回退可以用git branch 新分支 hash 之后在合并上去</p>
+<p><img src="https://img-blog.csdnimg.cn/20210122230046544.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>最后扔个图，checkout 与 reset的区别</p>
+</blockquote>
+<hr>
+<h2><a id="_685"></a>数据恢复</h2>
+<p>当使用版本回退后<br>
+<a href="#%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80">版本回退</a><br>
+可以用git branch 新分支 hash 之后在合并上去<br>
+之前有在 git branch 有讲 <a href="#%E7%89%88%E6%9C%AC%E5%9B%9E%E6%BA%AF">版本回溯</a><br>
+<strong>也可通过git reflog获得hash</strong></p>
+<h2><a id="tag_694"></a>打tag</h2>
+<blockquote>
+<p>tag 与分支类似，但是不能动，一般就是用来表示版本号的</p>
+</blockquote>
+<p>git tag tag名 //给现在的提交对象打tag</p>
+<p>git tag tag名 hash //给之前特定的提交对象打tag</p>
+<p>git tag //查看tag list</p>
+<p>git checkout tag名</p>
+<blockquote>
+<p>注意：这个可以切到tag那个版本，但是切过去分支指针不会跟着过去，也就是说，当前的head无指向，所以需要创建一个新的分支指向，同时也方便了之后的操作</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20210122234307874.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>由此 git本地操作完</strong></p>
+<hr>
+<h1><a id="_714"></a>远程仓库</h1>
+<p>git config --list //查看一些本地配置</p>
+<h2><a id="_718"></a>远程仓库别名</h2>
+<p>git remote -v // 查看远程仓库</p>
+<p>git remote add 别名 地址</p>
+<p><img src="https://img-blog.csdnimg.cn/20210124150100632.png" alt="在这里插入图片描述"></p>
+<h2><a id="git_push____726"></a>git push [仓库别名]  [分支]</h2>
+<p>推送到远程仓库</p>
+<h2><a id="git_clone__730"></a>git clone 地址</h2>
+<p>克隆远程仓库</p>
+<p>新建一个文件夹打开，运行git 命令行，<strong>直接运行 git clone 地址 不需要Git init</strong></p>
+<p>之后会自动生成 .git 文件夹</p>
+<blockquote>
+<p>克隆之后，查看这个文件目录中的git remote -v</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20210124163915520.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>可以看到系统自动起了别名</p>
+</blockquote>
+<p><strong>向远程仓库提交后，git会生成一个如图的远程跟踪分支</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20210124165418680.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>在首次git push 时，会生成远程跟踪分支<br>
+远程跟踪分支是本地分支与远程仓库分支的媒介，从远程分支上拉东西下来，先传给远程跟踪分支<br>
+然后用远程跟踪分支与本地分支合并</p>
+</blockquote>
+<h2><a id="git_fetch___752"></a>git fetch + 库别名</h2>
+<p><img src="https://img-blog.csdnimg.cn/20210124195054995.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>将我之前写的notes 拿下来，但是工作区目录并没有改变，因为现在还是在远程跟踪分支那里</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20210124195347610.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>创建一个分支与note/master对等的分支</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20210124195930260.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>用创建的分支，合并到现在的分支上去</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20210124202357350.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>由于这个是以前写的东西，放在了这个的历史里面，没有关联，需要加一个<code>--allow-unrelated-histories</code></p>
+</blockquote>
+<p>此时就给合并上来了</p>
+<p><img src="https://img-blog.csdnimg.cn/20210124202541826.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
+<img src="https://img-blog.csdnimg.cn/20210124202843314.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>可以看到此时的2021/master这个远程跟踪分支没有移动，<strong>我们是移动不了远程跟踪分支的</strong>，远程跟踪分支是根据git push的版本来确定，自动移动的</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20210124203706996.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>可以看到确实移动了</p>
+</blockquote>
+<h2><a id="git_pull_783"></a>git pull</h2>
+<p>总结：我们可以看到，从远程合并到当前很麻烦，需要先给到远程跟踪分支（<strong>git fetch</strong>），自己再从远程跟踪分支上拿到，合并</p>
+<p>很麻烦，我们可以直接 <strong>git pull</strong> 完成上面的步骤,从远程分支拉文件到本地分支</p>
+<p><img src="https://img-blog.csdnimg.cn/202101242042091.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>报错，是因为本地分支并没有和远程跟踪分支共进退，推荐我们使用<code>git branch --set-upstream-to....</code>，这样就可以两者共进退，看着像是没有了远程跟踪分支，直接本地分支和远程分支进行交互</p>
+</blockquote>
+<blockquote>
+<p>之后在克隆后的目录中，远程跟踪分支才和本地分支自动同步其他的都要自己设置同步</p>
+</blockquote>
+<h3><a id="git_branch_u__795"></a>git branch -u 远程跟踪分支</h3>
+<p>上面提到的本地分支和远程跟踪分支共进退，推荐使用<code>git branch --set-upstream-to-....</code>，这里可以简写，用<code>git branch -u 远程跟踪分支</code>,方便使用 这样会使<strong>本地分支变成一个跟踪分支</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20210124205200224.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>可以看到此时，本地当前库的master在跟踪远程的2021远程库的master</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/2021012420534840.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>当然本地和远程库目前是一样的，因为没有人对远程库进行修改，当前实际中，远程库不止自己一个人在使用，所以会有不同</p>
+</blockquote>
+<p>自己手动在github上修改过了现在就可以pull过来了</p>
+<p><img src="https://img-blog.csdnimg.cn/20210124210018295.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>总结：原本的<code>git fetch 别名</code>这个命令是先放到远程跟踪分支上去的，它的主要是如果自己不想直接拉取到自己的分支上去，自己可以先放在 远程跟踪分支上，然后 <code>git checkout -b 分支 远程跟踪分支</code>，这样先对远程跟踪分支修改，修改后的结果在合并到自己的分支中去，这样做也是很方便的</p>
+</blockquote>
+<p>通过 git branch -vv 可以查看<strong>跟踪分支</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20210124211240770.png" alt="在这里插入图片描述"></p>
+<h2><a id="git_checkout_track__817"></a>git checkout --track 远程跟踪分支</h2>
+<p>跟踪分支 上文有简略的提交的跟踪分支，这里也简单讲一下</p>
+<p>当我们在远程仓库 <strong>git fetch</strong> 一个自己没有用过的一个其他分支时,可以用</p>
+<pre><code> git checkout --track 远程跟踪分支
+</code></pre>
+<p>这个命令会生成一个与远程分支同名的分支，并切换到该分支</p>
+<blockquote>
+<p>当然如果已经有分支了，就用上面的git branch -u 远程跟踪分支</p>
+</blockquote>
+<h2><a id="_830"></a>冲突问题</h2>
+<p>当同一文件，别人修改了向远程库推，你也修改了向远程库推，由于你们彼此没有对方修改过的东西，这样提交会报错</p>
+<p><img src="https://img-blog.csdnimg.cn/20210124213555977.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>所以在向远程库推之前，应该先拉一下，把别人可能修改的拉过来，这时会造成两个版本的东西在一个文件里，git 会自动告诉你，并帮你标识两个版本修改过的地方，然后只需要，修改，add,commit就可以了</p>
+<blockquote>
+<p>这个与之前的，开分支，主干走在分支前，分支和主干都修改了相同文件，合并操作产生的冲突类似<br>
+<a href="#%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6%E5%86%B2%E7%AA%81">分支合并冲突</a></p>
+</blockquote>
+<h2><a id="_841"></a>删除远程分支</h2>
+<p>git push origin --delete serverfix //删除远程分支</p>
+<p>git remote prune origin --dry-run //列出仍在远程跟踪但是远程已被删除的无用分支</p>
+<p>git remote prune origin // 清除上面命令列出来的远程跟踪</p>
+<blockquote>
+<p>注意：删除远程分支肯定会留下远程跟踪分支，所以上面的是一套组合拳</p>
+</blockquote>
+<h2><a id="github__851"></a>github 远程仓库的一些问题</h2>
+<p>有个fork，可以把别人的代码拿到自己的给GitHub中,修改后，想和原作者说的话可以pull request</p>
+<p><img src="https://img-blog.csdnimg.cn/20210124223557856.png" alt="在这里插入图片描述"></p>
+<p>与原作者团队，发信息</p>
+<h2><a id="_859"></a>忽略文件</h2>
+<p>可在 .git 同级目录下新建一个 .gitignore 文件 这里面保存一些上传时忽略上传的文件，因为并不是所有文件都应该上传</p>
+<p>如：<br>
+node_modules/<br>
+.idea<br>
+等等</p>
+<p><img src="https://img-blog.csdnimg.cn/20210124230246617.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>示例</p>
+<p><img src="https://img-blog.csdnimg.cn/2021012423033071.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU5NDU2NA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><a href="https://github.com/github/gitignore" target="frame1">https://github.com/github/gitignore</a></p>
+<h2><a id="SSH_876"></a>SSH</h2>
+<p>ssh是一个公私钥，用来验证身份使用</p>
+<p>这样上传代码就不会验证账号密码，直接验证ssh是否配对成功</p>
+<p>在window的cmd 中运行</p>
+<pre><code>ssh-keygen -t rsa -C 你的邮箱 //生成公私钥
+</code></pre>
+<p>生成的文件位置：<br>
+C:\Users\Administrator.ssh</p>
+<p><img src="https://img-blog.csdnimg.cn/20210124232420337.png" alt="在这里插入图片描述"></p>
+<p>.pub的给GitHub</p>
+<p>这样就配对了</p>
+<pre><code>ssh -T git@github.com  //测试公私钥是否已经配对
+</code></pre>
+<hr>
+<p>由此，git 本地与远程仓库都更新完毕，通过这次学习感觉通透了很多</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
